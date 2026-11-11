@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movies_app/providers/countries_provider.dart';
 import 'package:movies_app/widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget{
+  const HomeScreen({super.key});
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final countries = ref.watch(countriesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cartellera'),
@@ -17,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               // Targetes principals
-              CardSwiper(),
+              CardSwiper(countries: countries.tenCountries),
 
               // Slider de pel·licules
               MovieSlider(),

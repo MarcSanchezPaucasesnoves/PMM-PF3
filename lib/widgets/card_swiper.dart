@@ -1,10 +1,27 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import '../models/models.dart';
 
 class CardSwiper extends StatelessWidget {
+  final List<Country> countries;
+
+  const CardSwiper({super.key, required this.countries});
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+
+    if (countries.length == 0) {
+      return Container(
+        width: double.infinity,
+        height: size.height*0.5,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Container(
         width: double.infinity,
@@ -12,20 +29,25 @@ class CardSwiper extends StatelessWidget {
         height: size.height * 0.5,
         // color: Colors.red,
         child: Swiper(
-          itemCount: 10,
+          itemCount: countries.length,
           layout: SwiperLayout.STACK,
           itemWidth: size.width * 0.6,
           itemHeight: size.height * 0.4,
           itemBuilder: (BuildContext context, int index) {
+            final country = countries[index];
             return GestureDetector(
               onTap: () => Navigator.pushNamed(context, 'details',
                   arguments: 'detalls peli'),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(
-                    placeholder: AssetImage('assets/no-image.jpg'),
-                    image: NetworkImage('https://placehold.co/300x400/png'),
-                    fit: BoxFit.cover),
+                  placeholder: AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(country.fullFlagImage),
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset("assets/no-image.jpg", fit: BoxFit.cover,);
+                  },
+                ),
               ),
             );
           },
