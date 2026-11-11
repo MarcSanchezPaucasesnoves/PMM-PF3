@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movies_app/providers/countries_provider.dart';
-import 'package:movies_app/widgets/widgets.dart';
+import 'package:countries_app/providers/countries_provider.dart';
+import 'package:countries_app/widgets/widgets.dart';
 
 class HomeScreen extends ConsumerWidget{
   const HomeScreen({super.key});
@@ -27,10 +27,13 @@ class HomeScreen extends ConsumerWidget{
               CardSwiper(countries: countries.tenCountries),
 
               // Slider de pel·licules
-              MovieSlider(),
+              MovieSlider(countries: countries.europeCountries, widgetTitle: "Europe Countries",),
               // Poodeu fer la prova d'afegir-ne uns quants, veureu com cada llista és independent
-              // MovieSlider(),
-              // MovieSlider(),
+              MovieSlider(countries: countries.africaCountries, widgetTitle: "Africa Countries",),
+              MovieSlider(countries: countries.americasCountries, widgetTitle: "America Countries",),
+              MovieSlider(countries: countries.antarcticCountries, widgetTitle: "Antarctic Countries",),
+              MovieSlider(countries: countries.asiaCountries, widgetTitle: "Asia Countries",),
+              MovieSlider(countries: countries.oceaniaCountries, widgetTitle: "Oceania Countries",),
             ],
           ),
         ),

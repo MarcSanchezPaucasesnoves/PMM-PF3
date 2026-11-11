@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movies_app/screens/screens.dart';
+import 'package:countries_app/screens/screens.dart';
 
 void main() => runApp(ProviderScope(child: MyApp()));
 

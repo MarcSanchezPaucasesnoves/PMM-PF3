@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'models.dart';
 
-class TenCountriesResponse {
+class CountriesResponse {
     final Data data;
 
-    TenCountriesResponse({
+    CountriesResponse({
         required this.data,
     });
 
-    factory TenCountriesResponse.fromJson(String str) => TenCountriesResponse.fromMap(json.decode(str));
+    factory CountriesResponse.fromJson(String str) => CountriesResponse.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
 
-    factory TenCountriesResponse.fromMap(Map<String, dynamic> json) => TenCountriesResponse(
+    factory CountriesResponse.fromMap(Map<String, dynamic> json) => CountriesResponse(
         data: Data.fromMap(json["data"]),
     );
 

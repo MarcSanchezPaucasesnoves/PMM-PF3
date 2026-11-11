@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
+
 class MovieSlider extends StatelessWidget {
-  // const MovieSlider({Key? key}) : super(key: key);
+
+  final String widgetTitle;
+
+  final List<Country> countries;
+
+  const MovieSlider({super.key, required this.countries, required this.widgetTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -12,17 +19,17 @@ class MovieSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text('Populars',
+            child: Text(widgetTitle,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 20,
-                itemBuilder: (_, int index) => _MoviePoster()),
+                itemCount: countries.length,
+                itemBuilder: (_, int index) => _MoviePoster(country: countries[index],)),
           )
         ],
       ),
@@ -31,7 +38,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({Key? key}) : super(key: key);
+
+  final Country country;
+
+  const _MoviePoster({Key? key, required this.country}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +58,7 @@ class _MoviePoster extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
                 placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage('https://placehold.co/300x400/png'),
+                image: NetworkImage(country.fullFlagImage),
                 width: 130,
                 height: 190,
                 fit: BoxFit.cover,
@@ -59,7 +69,7 @@ class _MoviePoster extends StatelessWidget {
             height: 5,
           ),
           Text(
-            'Star Wars: El retorno del Jedi',
+            country.names["common"] ?? "",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
