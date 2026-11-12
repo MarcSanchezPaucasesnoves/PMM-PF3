@@ -42,7 +42,7 @@ class _CustomAppBar extends StatelessWidget {
   final Country country;
   final Map<String, List<String>> capitalImg;
 
-  _CustomAppBar({required this.country, required this.capitalImg});
+  const _CustomAppBar({required this.country, required this.capitalImg});
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +128,9 @@ class _PosterAndTitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  Country country;
+  final Country country;
 
-  _Overview({required this.country});
+  const _Overview({required this.country});
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +146,9 @@ class _Overview extends StatelessWidget {
 }
 
 class _InformationCard extends StatelessWidget {
-  Country country;
+  final Country country;
 
-  _InformationCard({required this.country});
+  const _InformationCard({required this.country});
 
   @override
   Widget build(BuildContext context) {
