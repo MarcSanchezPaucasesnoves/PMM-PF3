@@ -1,24 +1,33 @@
+import 'package:countries_app/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:countries_app/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DetailsScreen extends StatelessWidget {
+import '../models/models.dart';
+
+class DetailsScreen extends ConsumerWidget {
+  
+  const DetailsScreen({super.key});
+
+
   @override
-  Widget build(BuildContext context) {
-    // TODO: Canviar després per una instància de Peli
-    final String peli =
-        ModalRoute.of(context)?.settings.arguments.toString() ?? 'no-movie';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Country country = ModalRoute.of(context)?.settings.arguments as Country;
+
+    final Map<String, List<String>> imgProvier = ref.watch(imgWikipediaProvider(country));
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(),
+          _CustomAppBar(country: country, capitalImg: imgProvier,),
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _PosterAndTitile(),
-                _Overview(),
-                _Overview(),
-                CastingCards(),
+                _PosterAndTitle(country: country),
+                _Overview(country: country),
+                _InformationCard(country: country),
+                SizedBox(height: 20,),
+                CastingCards(country: country, currencyImg: imgProvier),
               ],
             ),
           ),
@@ -29,8 +38,16 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
+
+  final Country country;
+  final Map<String, List<String>> capitalImg;
+
+  _CustomAppBar({required this.country, required this.capitalImg});
+
   @override
   Widget build(BuildContext context) {
+    final String? imgUrl = capitalImg[country.commonName]?.elementAtOrNull(0);
+
     // Exactament igual que la AppBaer però amb bon comportament davant scroll
     return SliverAppBar(
       backgroundColor: Colors.indigo,
@@ -45,14 +62,14 @@ class _CustomAppBar extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           color: Colors.black12,
           padding: const EdgeInsets.only(bottom: 10),
-          child: Text(
-            'Títol peli',
-            style: TextStyle(fontSize: 16),
-          ),
         ),
-        background: FadeInImage(
+        background: (imgUrl != null && imgUrl.isNotEmpty) 
+        ? FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://placehold.co/500x300/png'),
+          image: NetworkImage(imgUrl),
+          fit: BoxFit.cover,
+        ) : Image.asset(
+          'assets/loading.gif',
           fit: BoxFit.cover,
         ),
       ),
@@ -60,20 +77,24 @@ class _CustomAppBar extends StatelessWidget {
   }
 }
 
-class _PosterAndTitile extends StatelessWidget {
+class _PosterAndTitle extends StatelessWidget {
+  final Country country;
+
+  const _PosterAndTitle({required this.country});
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
+      child: Column(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage('https://placehold.co/200x300/png'),
+              image: NetworkImage(country.fullFlagImage),
               height: 150,
             ),
           ),
@@ -83,24 +104,21 @@ class _PosterAndTitile extends StatelessWidget {
           Column(
             children: [
               Text(
-                'Títol peli',
+                country.names["common"],
                 style: textTheme.headlineSmall,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
               Text(
-                'Títol original',
+                country.officialName,
                 style: textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
-              Row(
-                children: [
-                  const Icon(Icons.star_outline, size: 15, color: Colors.grey),
-                  const SizedBox(width: 5),
-                  Text('Nota mitjana', style: textTheme.bodySmall),
-                ],
-              )
+              Text(
+                country.popularCode,
+                style: textTheme.bodySmall,
+              ),
             ],
           )
         ],
@@ -110,15 +128,64 @@ class _PosterAndTitile extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
+  Country country;
+
+  _Overview({required this.country});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Text(
-        'Labore eiusmod ad reprehenderit irure eu sunt ex minim. Lorem fugiat Lorem proident duis ea cupidatat. Commodo duis culpa reprehenderit ad elit. Velit duis officia reprehenderit ullamco sint id anim officia est. Enim mollit nisi et exercitation dolore commodo. Cillum mollit laborum non nulla cillum non do reprehenderit Lorem deserunt ex eu sunt do.',
+        country.descriptions["long"],
         textAlign: TextAlign.justify,
         style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
+}
+
+class _InformationCard extends StatelessWidget {
+  Country country;
+
+  _InformationCard({required this.country});
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final List<String> languages = country.getLanguagesList();
+    final List<String> currencyList = country.getCurrencyList();
+
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+        children: [
+          SizedBox(height: 20,),
+          Text("Capital", style: textTheme.titleMedium,),
+          Text(country.capitalName),
+          SizedBox(height: 10,),
+          Text("Population", style: textTheme.titleMedium,),
+          Text(country.population.toString()),
+          SizedBox(height: 10,),
+          Text("Area", style: textTheme.titleMedium,),
+          Text("Kilometers: ${country.area["kilometers"]}"),
+          Text("Miles: ${country.area["miles"]}"),
+          SizedBox(height: 10,),
+          Text("Languages", style: textTheme.titleMedium,),
+          for (String language in languages)
+            Text(language),
+          SizedBox(height: 10,),
+          Text("Currencies", style: textTheme.titleMedium,),
+          for (String currency in currencyList)
+            Text(
+              currency,
+              style: textTheme.bodySmall,
+            ),
+          SizedBox(height: 20,),
+        ],
+      ),
+    );
+  }
+
 }

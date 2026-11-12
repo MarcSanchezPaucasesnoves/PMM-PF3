@@ -37,7 +37,7 @@ class CardSwiper extends StatelessWidget {
             final country = countries[index];
             return GestureDetector(
               onTap: () => Navigator.pushNamed(context, 'details',
-                  arguments: 'detalls peli'),
+                  arguments: country),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(

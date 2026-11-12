@@ -27,13 +27,13 @@ class HomeScreen extends ConsumerWidget{
               CardSwiper(countries: countries.tenCountries),
 
               // Slider de pel·licules
-              MovieSlider(countries: countries.europeCountries, widgetTitle: "Europe Countries",),
+              MovieSlider(countries: countries.europeCountries, widgetTitle: "Región de Europa",),
               // Poodeu fer la prova d'afegir-ne uns quants, veureu com cada llista és independent
-              MovieSlider(countries: countries.africaCountries, widgetTitle: "Africa Countries",),
-              MovieSlider(countries: countries.americasCountries, widgetTitle: "America Countries",),
-              MovieSlider(countries: countries.antarcticCountries, widgetTitle: "Antarctic Countries",),
-              MovieSlider(countries: countries.asiaCountries, widgetTitle: "Asia Countries",),
-              MovieSlider(countries: countries.oceaniaCountries, widgetTitle: "Oceania Countries",),
+              MovieSlider(countries: countries.africaCountries, widgetTitle: "Región de África",),
+              MovieSlider(countries: countries.americasCountries, widgetTitle: "Región de America",),
+              MovieSlider(countries: countries.antarcticCountries, widgetTitle: "Región de Antártida",),
+              MovieSlider(countries: countries.asiaCountries, widgetTitle: "Región de Asia",),
+              MovieSlider(countries: countries.oceaniaCountries, widgetTitle: "Región de Oceania",),
             ],
           ),
         ),

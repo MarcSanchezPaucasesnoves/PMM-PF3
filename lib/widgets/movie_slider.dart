@@ -41,7 +41,7 @@ class _MoviePoster extends StatelessWidget {
 
   final Country country;
 
-  const _MoviePoster({Key? key, required this.country}) : super(key: key);
+  const _MoviePoster({required this.country});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _MoviePoster extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: 'detalls peli'),
+                arguments: country),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
@@ -69,7 +69,7 @@ class _MoviePoster extends StatelessWidget {
             height: 5,
           ),
           Text(
-            country.names["common"] ?? "",
+            country.commonName,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

@@ -43,6 +43,27 @@ class Country {
     return "https://placehold.co/300x400/png";
   }
 
+  String get commonName {
+    return names["translations"]?["spa"]?["common"] ?? "-";
+  }
+
+  String get officialName {
+    return names["official"] ?? "-";
+  }
+
+  String get popularCode {
+    return codes["alpha_2"] ?? "-";
+  }
+
+  String get capitalName {
+    return capitals.firstOrNull?["name"] ?? "";
+  }
+
+  String get currencyName {
+    return currencies.firstOrNull?["name"] ?? "";
+  }
+  
+
   Country({
     required this.names,
     required this.codes,
@@ -79,6 +100,10 @@ class Country {
     required this.uuid,
     required this.meta,
   });
+
+  List<String> get leadersNames {
+    return leaders.map((leader) => (leader["name"] ?? "").toString()).toList();
+  }
 
   factory Country.fromJson(String str) => Country.fromMap(json.decode(str));
 
@@ -171,4 +196,27 @@ class Country {
         "uuid": uuid,
         "_meta": meta,
       };
+
+
+  List<String> getLanguagesList() {
+    List<String> languagesList = [];
+    int languagesLength = languages.length;
+
+    for (var i = 0; i < languagesLength; i++) {
+      languagesList.add(languages.elementAt(i)["name"]);
+    }
+
+    return languagesList;
+  }
+
+  List<String> getCurrencyList() {
+    List<String> currencyList = [];
+    int currencyLength = currencies.length;
+
+    for (var i = 0; i < currencyLength; i++) {
+      currencyList.add(currencies.elementAt(i)["name"]);
+    }
+
+    return currencyList;
+  }
 }
