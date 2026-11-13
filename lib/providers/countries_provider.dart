@@ -32,7 +32,7 @@ class CountriesProvider extends Notifier<CountriesState> {
         "limit": _limit
       });
 
-    final result = await http.get(url);
+      final result = await http.get(url);
       if (result.statusCode != 200) return;
 
       final tenCountries = CountriesResponse.fromJson(result.body);
