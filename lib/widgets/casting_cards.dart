@@ -5,7 +5,7 @@ import '../models/models.dart';
 class CastingCards extends StatelessWidget {
 
   final Country country;
-  final Map<String, List<String>> currencyImg;
+  final List<String> currencyImg;
 
   const CastingCards({super.key, required this.country, required this.currencyImg});
   
@@ -30,7 +30,7 @@ class CastingCards extends StatelessWidget {
 
 class _CastCard extends StatelessWidget {
   final Country country;
-  final Map<String, List<String>> currencyImg;
+  final List<String> currencyImg;
   final String cardTitle;
   final String nameCardTitle;
   final int indexImage;
@@ -40,7 +40,7 @@ class _CastCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final String? imgUrl = currencyImg[country.commonName]?.elementAtOrNull(indexImage);
+    final String? imgUrl = currencyImg.elementAtOrNull(indexImage);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -60,6 +60,8 @@ class _CastCard extends StatelessWidget {
                 ) : Image.asset(
                   'assets/loading.gif',
                   fit: BoxFit.cover,
+                  height: 140,
+                  width: 100,
                 ),
           ),
           const SizedBox(

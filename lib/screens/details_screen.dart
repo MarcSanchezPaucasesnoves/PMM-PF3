@@ -14,12 +14,13 @@ class DetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Country country = ModalRoute.of(context)?.settings.arguments as Country;
 
-    final Map<String, List<String>> imgProvier = ref.watch(imgWikipediaProvider(country));
+    final AsyncValue<List<String>> imgAsync = ref.watch(imgWikipediaProvider(country));
+    final List<String> imgList = imgAsync.value ?? [];
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(country: country, capitalImg: imgProvier,),
+          _CustomAppBar(country: country, capitalImg: imgList,),
           SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -27,7 +28,7 @@ class DetailsScreen extends ConsumerWidget {
                 _Overview(country: country),
                 _InformationCard(country: country),
                 SizedBox(height: 20,),
-                CastingCards(country: country, currencyImg: imgProvier),
+                CastingCards(country: country, currencyImg: imgList),
               ],
             ),
           ),
@@ -40,13 +41,13 @@ class DetailsScreen extends ConsumerWidget {
 class _CustomAppBar extends StatelessWidget {
 
   final Country country;
-  final Map<String, List<String>> capitalImg;
+  final List<String> capitalImg;
 
   const _CustomAppBar({required this.country, required this.capitalImg});
 
   @override
   Widget build(BuildContext context) {
-    final String? imgUrl = capitalImg[country.commonName]?.elementAtOrNull(0);
+    final String? imgUrl = capitalImg.elementAtOrNull(0);
 
     // Exactament igual que la AppBaer però amb bon comportament davant scroll
     return SliverAppBar(
