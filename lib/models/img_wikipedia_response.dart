@@ -14,7 +14,6 @@ class ImgWikipediaResponse {
       return ImgWikipediaResponse(source: null);
     }
 
-    // Toma el primer resultado sin importar el ID numérico de la página
     final firstPage = pages.values.first as Map<String, dynamic>;
     return ImgWikipediaResponse(
       source: firstPage['thumbnail']?['source'],
